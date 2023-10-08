@@ -70,9 +70,12 @@ public partial class Track : Node3D
 
 	void UpdateAllNotesScaleAndPosition()
 	{
-		foreach (Note note in GetChildren())
+		foreach (Node node in GetChildren())
 		{
-			UpdateNoteScaleAndPosition(note);
+			if (node is Note note)
+			{
+				UpdateNoteScaleAndPosition(note);
+			}
 		}
 	}
 
@@ -88,9 +91,12 @@ public partial class Track : Node3D
 
 	void UpdateAllNotesColor()
 	{
-		foreach (Note note in GetChildren())
+		foreach (Node node in GetChildren())
 		{
-			UpdateNoteColor(note);
+			if (node is Note note)
+			{
+				UpdateNoteColor(note);
+			}
 		}
 	}
 

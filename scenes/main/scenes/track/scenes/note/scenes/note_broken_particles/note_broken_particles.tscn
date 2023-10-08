@@ -87,7 +87,7 @@ _data = {
 }
 
 [node name="NoteBrokenParticles" type="CPUParticles3D"]
-amount = 600
+amount = 400
 lifetime = 10.0
 fixed_fps = 30
 mesh = SubResource("SphereMesh_s8tid")

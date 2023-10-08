@@ -7,12 +7,15 @@ public partial class PlayButton : Button
 	public override void _Ready()
 	{
 		Pressed += () => {
-			GlobalState.Singleton.NoteMoveSpeed = 0.0f;
+			GlobalSignal.Singleton.EmitSignal(GlobalSignal.SignalName.StartPlay);
 		};
+		GlobalState.Singleton.MidiFileChanged += UpdateDisabled;
+		GlobalState.Singleton.AudioPathChanged += UpdateDisabled;
+		UpdateDisabled();
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+	void UpdateDisabled()
 	{
+		Disabled = GlobalState.Singleton.MidiFile is null || GlobalState.Singleton.AudioPath is null;
 	}
 }
