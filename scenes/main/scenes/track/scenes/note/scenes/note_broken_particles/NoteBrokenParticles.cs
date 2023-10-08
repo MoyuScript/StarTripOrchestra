@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class NoteBrokenParticles : GpuParticles3D
+public partial class NoteBrokenParticles : CpuParticles3D
 {
 	Color _particleColor = new Color(1.0f, 1.0f, 0.61f);
 	[Export(PropertyHint.ColorNoAlpha)] public Color ParticleColor
@@ -33,22 +33,18 @@ public partial class NoteBrokenParticles : GpuParticles3D
 
 	public override void _Ready()
 	{
-		var material = (ParticleProcessMaterial)ProcessMaterial.Duplicate();
-		ProcessMaterial = material;
 		SetColor(ParticleColor);
 		SetVelocity(Velocity);
 	}
 
 	void SetColor(Color color)
 	{
-		var material = (ParticleProcessMaterial)ProcessMaterial;
-		material.Color = color;
+		Color = color;
 	}
 
 	void SetVelocity(float velocity)
 	{
-		var material = (ParticleProcessMaterial)ProcessMaterial;
-		material.InitialVelocityMin = material.InitialVelocityMax = velocity;
+		InitialVelocityMin = InitialVelocityMax = velocity;
 	}
 	public void Quit()
 	{

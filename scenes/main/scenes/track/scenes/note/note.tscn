@@ -25,6 +25,7 @@ uniform vec3 uv1_scale;
 uniform vec3 uv1_offset;
 uniform vec3 uv2_scale;
 uniform vec3 uv2_offset;
+uniform float alpha = 1.0f;
 
 
 void vertex() {
@@ -51,16 +52,17 @@ render_priority = 0
 shader = SubResource("Shader_wref4")
 shader_parameter/albedo = Color(1, 0.988235, 0.6, 1)
 shader_parameter/point_size = 1.0
-shader_parameter/roughness = 1.0
+shader_parameter/roughness = 0.0
 shader_parameter/metallic_texture_channel = null
 shader_parameter/specular = 0.5
 shader_parameter/metallic = 0.0
 shader_parameter/emission = Color(1, 0.988235, 0.6, 1)
-shader_parameter/emission_energy = 1.0
+shader_parameter/emission_energy = 0.5
 shader_parameter/uv1_scale = Vector3(1, 1, 1)
 shader_parameter/uv1_offset = Vector3(0, 0, 0)
 shader_parameter/uv2_scale = Vector3(1, 1, 1)
 shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/alpha = 0.7
 
 [sub_resource type="BoxMesh" id="BoxMesh_4bf7t"]
 material = SubResource("ShaderMaterial_r4ifj")
@@ -113,6 +115,7 @@ HitLightScene = ExtResource("3_542vv")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
 layers = 3
+cast_shadow = 0
 gi_mode = 0
 mesh = SubResource("BoxMesh_4bf7t")
 skeleton = NodePath("")
