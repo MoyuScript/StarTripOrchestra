@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://c7bs24cgbhwqw"]
+
+[ext_resource type="Script" path="res://scenes/main/scenes/menu/scenes/track_item/TrackItem.cs" id="1_13px7"]
+
+[node name="TrackItem" type="HBoxContainer"]
+script = ExtResource("1_13px7")
+
+[node name="Index" type="LineEdit" parent="."]
+layout_mode = 2
+placeholder_text = "编号"
+alignment = 1
+editable = false
+
+[node name="Name" type="LineEdit" parent="."]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+placeholder_text = "轨道名"
+editable = false
+expand_to_text_length = true
+
+[node name="Color" type="ColorPickerButton" parent="."]
+layout_mode = 2
+text = "          "
+color = Color(0.988235, 1, 0.180392, 1)
+edit_alpha = false

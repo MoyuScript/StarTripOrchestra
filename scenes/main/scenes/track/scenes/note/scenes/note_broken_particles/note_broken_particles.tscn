@@ -1,0 +1,94 @@
+[gd_scene load_steps=11 format=3 uid="uid://bjfdn4wn2ruxf"]
+
+[ext_resource type="QuadMesh" uid="uid://85oqotvumhn4" path="res://scenes/main/scenes/track/scenes/note/scenes/note_broken_particles/note_broken_particles.tres" id="1_bn0o7"]
+[ext_resource type="Script" path="res://scenes/main/scenes/track/scenes/note/scenes/note_broken_particles/NoteBrokenParticles.cs" id="2_oge60"]
+
+[sub_resource type="Gradient" id="Gradient_hgaj5"]
+offsets = PackedFloat32Array(0, 0.2, 0.448649, 0.648649, 0.832432, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.141176, 1, 1, 1, 1, 1, 1, 1, 0.164706, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_y2str"]
+gradient = SubResource("Gradient_hgaj5")
+
+[sub_resource type="Curve" id="Curve_5bycs"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.820961, 0.857651), -0.171568, -0.171568, 0, 0, Vector2(0.991266, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_ldlid"]
+curve = SubResource("Curve_5bycs")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dyqw3"]
+direction = Vector3(-1, 0, 0)
+spread = 10.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 4.0
+initial_velocity_max = 4.0
+scale_min = 3.0
+scale_max = 5.0
+scale_curve = SubResource("CurveTexture_ldlid")
+color = Color(1, 1, 0.607843, 1)
+color_ramp = SubResource("GradientTexture1D_y2str")
+
+[sub_resource type="Animation" id="Animation_epacr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_rf4sf"]
+resource_name = "quit"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(10),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_aeek7"]
+_data = {
+"RESET": SubResource("Animation_epacr"),
+"quit": SubResource("Animation_rf4sf")
+}
+
+[node name="NoteBrokenParticles" type="GPUParticles3D"]
+amount = 600
+lifetime = 10.0
+transform_align = 1
+process_material = SubResource("ParticleProcessMaterial_dyqw3")
+draw_pass_1 = ExtResource("1_bn0o7")
+script = ExtResource("2_oge60")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_aeek7")
+}

@@ -1,0 +1,300 @@
+[gd_scene load_steps=33 format=3 uid="uid://boq64huogwdbh"]
+
+[ext_resource type="Script" path="res://scenes/main/Main.cs" id="1_alejo"]
+[ext_resource type="Script" path="res://scenes/main/HitFace.cs" id="2_0nkmr"]
+[ext_resource type="Script" path="res://scenes/main/TrackList.cs" id="2_dgw3f"]
+[ext_resource type="PackedScene" uid="uid://blitgjkq24tcw" path="res://scenes/main/scenes/track/track.tscn" id="2_s80o2"]
+[ext_resource type="PackedScene" uid="uid://o1ckyn20vtkc" path="res://scenes/main/scenes/debug_info/debug_info.tscn" id="5_11nj1"]
+[ext_resource type="PackedScene" uid="uid://boibknvwwiud5" path="res://scenes/main/scenes/menu/menu.tscn" id="5_f2jre"]
+[ext_resource type="Script" path="res://scenes/main/BackgroundMusic.cs" id="6_12si2"]
+
+[sub_resource type="Shader" id="Shader_jhd0i"]
+code = "
+// NOTE: Shader automatically converted from Godot Engine 4.1.1.stable.mono's PanoramaSkyMaterial.
+
+shader_type sky;
+
+uniform sampler2D source_panorama : filter_linear, source_color, hint_default_black;
+uniform vec3 star_color : source_color;
+
+float random(vec2 st) {
+    return fract(sin(dot(st.xy, vec2(565656.233,123123.2033))) * 323434.34344);
+}
+
+vec2 random2(vec2 p) {
+    return fract(sin(vec2(dot(p,vec2(234234.1,54544.7)), sin(dot(p,vec2(33332.5,18563.3))))) *323434.34344);
+}
+
+void sky() {
+	COLOR = texture(source_panorama, SKY_COORDS).rgb;
+	vec2 uv = SKY_COORDS * 50.0;
+    vec2 ipos = floor(uv);  // 整数部分组成二维数组：网格的坐标
+    vec2 fpos = fract(uv);  // 小数部分组成二维数组：网格内的UV
+	float starRadius = 0.010;
+
+	vec2 targetPoint = random2(ipos / 50.0f);
+	float dist = distance(fpos, targetPoint);
+    vec3 color = star_color * vec3(1.0 - step(starRadius, dist));//同一个格子坐标，产生同一个颜色
+	float peroid = random(ipos / 40.0) * 0.5;
+	float timeOffset = TIME + random(ipos / 40.0);
+	float brightness = clamp(abs(mod(peroid * timeOffset, 1.0) - 0.5) * 2.0, 0.1, 1.0);
+	COLOR += color * brightness;
+	
+}
+"
+
+[sub_resource type="Gradient" id="Gradient_ajddu"]
+colors = PackedColorArray(0.0235294, 0.0313726, 0.109804, 1, 0.0705882, 0.219608, 0.458824, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_awts3"]
+gradient = SubResource("Gradient_ajddu")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 0.625)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ik8ub"]
+shader = SubResource("Shader_jhd0i")
+shader_parameter/star_color = Color(0.733333, 0.870588, 1, 1)
+shader_parameter/source_panorama = SubResource("GradientTexture2D_awts3")
+
+[sub_resource type="Sky" id="Sky_ncls5"]
+sky_material = SubResource("ShaderMaterial_ik8ub")
+radiance_size = 4
+
+[sub_resource type="Environment" id="Environment_qm3na"]
+background_mode = 2
+sky = SubResource("Sky_ncls5")
+ssao_horizon = 0.0
+ssao_sharpness = 1.0
+ssil_radius = 5.11
+glow_enabled = true
+glow_normalized = true
+glow_blend_mode = 0
+fog_light_energy = 0.0
+
+[sub_resource type="Animation" id="Animation_bylih"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WorldEnvironment:environment:sky_rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_sjlnr"]
+resource_name = "sky_star_move"
+length = 1000.0
+loop_mode = 1
+step = 10.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WorldEnvironment:environment:sky_rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1000),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -6.28319, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vwda5"]
+_data = {
+"RESET": SubResource("Animation_bylih"),
+"sky_star_move": SubResource("Animation_sjlnr")
+}
+
+[sub_resource type="Gradient" id="Gradient_r07yc"]
+offsets = PackedFloat32Array(0, 0.268939, 0.708333, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0.119792, 0.422363, 1, 1, 0.143229, 0.651937, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_cnjfp"]
+gradient = SubResource("Gradient_r07yc")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_f8ht3"]
+emission_shape = 3
+emission_box_extents = Vector3(150, 20, 150)
+spread = 5.0
+flatness = 0.8
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 5.0
+scale_min = 5.0
+scale_max = 10.0
+color_ramp = SubResource("GradientTexture1D_cnjfp")
+hue_variation_min = -0.05
+hue_variation_max = 0.02
+turbulence_noise_strength = 17.44
+
+[sub_resource type="Shader" id="Shader_er6nc"]
+code = "// NOTE: Shader automatically converted from Godot Engine 4.1.1.stable.mono's StandardMaterial3D.
+
+shader_type spatial;
+render_mode blend_add;
+
+uniform sampler2D alpha_texture;
+uniform float emission_energy = 1.0;
+
+void fragment() {
+	ALPHA = texture(alpha_texture, UV).a * COLOR.a;
+	ALBEDO = COLOR.rgb;
+	// 从粒子材质中获取颜色
+	EMISSION = COLOR.rgb * emission_energy;
+}
+"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_m068i"]
+load_path = "res://.godot/imported/circle_blurred.png-7c5661aa7cf0447948d41a38b1339a0b.s3tc.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hbx8h"]
+render_priority = 0
+shader = SubResource("Shader_er6nc")
+shader_parameter/emission_energy = 0.1
+shader_parameter/alpha_texture = SubResource("CompressedTexture2D_m068i")
+
+[sub_resource type="QuadMesh" id="QuadMesh_ei2ei"]
+material = SubResource("ShaderMaterial_hbx8h")
+size = Vector2(0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_47pd4"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_orbla"]
+material = SubResource("StandardMaterial3D_47pd4")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v1501"]
+transparency = 1
+albedo_color = Color(0.105882, 0.266667, 0.509804, 0.698039)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wddmk"]
+material = SubResource("StandardMaterial3D_v1501")
+size = Vector2(800, 800)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iv2ba"]
+transparency = 1
+blend_mode = 1
+albedo_color = Color(0.803922, 0.803922, 0.803922, 0.729412)
+roughness = 0.0
+emission = Color(0, 0.0666667, 0.129412, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pg7nw"]
+material = SubResource("StandardMaterial3D_iv2ba")
+size = Vector2(2000, 40)
+orientation = 0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_683hj"]
+size = Vector3(1, 40, 1000)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uf4sc"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 3.4
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_p1nhd"]
+material = SubResource("StandardMaterial3D_uf4sc")
+radius = 5.0
+height = 10.0
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_alejo")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_qm3na")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 100, 0)
+light_color = Color(0.0234375, 0.03125, 0.113281, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "sky_star_move"
+libraries = {
+"": SubResource("AnimationLibrary_vwda5")
+}
+
+[node name="FloorParticles" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 87.97, 10, -8.52)
+amount = 500
+lifetime = 10.0
+transform_align = 1
+process_material = SubResource("ParticleProcessMaterial_f8ht3")
+draw_pass_1 = SubResource("QuadMesh_ei2ei")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="FloorParticles"]
+visible = false
+mesh = SubResource("CapsuleMesh_orbla")
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+layers = 2
+mesh = SubResource("PlaneMesh_wddmk")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.554656, 0.83208, 0, -0.83208, 0.554656, 87.4849, 200.09, 119.337)
+fov = 37.8493
+
+[node name="Playground" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="TrackList" type="Node3D" parent="Playground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+script = ExtResource("2_dgw3f")
+TrackScene = ExtResource("2_s80o2")
+
+[node name="HitFace" type="StaticBody3D" parent="Playground"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("2_0nkmr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Playground/HitFace"]
+mesh = SubResource("PlaneMesh_pg7nw")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Playground/HitFace"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+shape = SubResource("BoxShape3D_683hj")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="DebugInfo" parent="HUD" instance=ExtResource("5_11nj1")]
+
+[node name="Menu" parent="HUD" instance=ExtResource("5_f2jre")]
+visible = false
+
+[node name="Gizmos" type="Node3D" parent="."]
+
+[node name="CameraRange" type="Node3D" parent="Gizmos"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Gizmos/CameraRange"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -96.2428, 0, -134.252)
+mesh = SubResource("CapsuleMesh_p1nhd")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Gizmos/CameraRange"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.7158, 0, 59.4218)
+mesh = SubResource("CapsuleMesh_p1nhd")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Gizmos/CameraRange"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 204.77, 0, 58.3573)
+mesh = SubResource("CapsuleMesh_p1nhd")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Gizmos/CameraRange"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 270.414, 0, -137.419)
+mesh = SubResource("CapsuleMesh_p1nhd")
+skeleton = NodePath("../../..")
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
+script = ExtResource("6_12si2")
+
+[node name="AlertDialog" type="AcceptDialog" parent="."]
+initial_position = 1
+size = Vector2i(600, 200)

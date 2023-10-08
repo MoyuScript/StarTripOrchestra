@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://blitgjkq24tcw"]
+
+[ext_resource type="Script" path="res://scenes/main/scenes/track/Track.cs" id="1_vwkqy"]
+[ext_resource type="PackedScene" uid="uid://13hnb7ikwgcg" path="res://scenes/main/scenes/track/scenes/note/note.tscn" id="2_4yex8"]
+
+[node name="Track" type="Node3D"]
+script = ExtResource("1_vwkqy")
+NoteScene = ExtResource("2_4yex8")
