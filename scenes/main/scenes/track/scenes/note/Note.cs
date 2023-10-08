@@ -91,10 +91,10 @@ public partial class Note : CharacterBody3D
 			if (Scale.X <= 0.1f)
 			{
 				StopDisappear();
-				// QueueFree();
-				Visible = false;
-				SetProcess(false);
-				SetPhysicsProcess(false);
+				QueueFree();
+				// Visible = false;
+				// SetProcess(false);
+				// SetPhysicsProcess(false);
 				return;
 			}
 			GlobalState globalState = GetNode<GlobalState>("/root/GlobalState");

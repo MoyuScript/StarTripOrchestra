@@ -269,6 +269,7 @@ shape = SubResource("BoxShape3D_683hj")
 visible = false
 
 [node name="Gizmos" type="Node3D" parent="."]
+visible = false
 
 [node name="CameraRange" type="Node3D" parent="Gizmos"]
 

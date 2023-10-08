@@ -1,33 +1,39 @@
-[gd_scene load_steps=11 format=3 uid="uid://bjfdn4wn2ruxf"]
+[gd_scene load_steps=10 format=3 uid="uid://bjfdn4wn2ruxf"]
 
-[ext_resource type="QuadMesh" uid="uid://85oqotvumhn4" path="res://scenes/main/scenes/track/scenes/note/scenes/note_broken_particles/note_broken_particles.tres" id="1_bn0o7"]
 [ext_resource type="Script" path="res://scenes/main/scenes/track/scenes/note/scenes/note_broken_particles/NoteBrokenParticles.cs" id="2_oge60"]
 
-[sub_resource type="Gradient" id="Gradient_hgaj5"]
-offsets = PackedFloat32Array(0, 0.2, 0.448649, 0.648649, 0.832432, 1)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.141176, 1, 1, 1, 1, 1, 1, 1, 0.164706, 1, 1, 1, 1, 1, 1, 1, 0)
+[sub_resource type="Shader" id="Shader_idqlc"]
+code = "shader_type spatial;
+render_mode blend_add;
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_y2str"]
-gradient = SubResource("Gradient_hgaj5")
+uniform float emission_energy = 1.0;
+
+void fragment() {
+	ALPHA = COLOR.a;
+	ALBEDO = COLOR.rgb;
+	// 从粒子材质中获取颜色
+	EMISSION = COLOR.rgb * emission_energy;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x6mv5"]
+render_priority = 0
+shader = SubResource("Shader_idqlc")
+shader_parameter/emission_energy = 3.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_s8tid"]
+material = SubResource("ShaderMaterial_x6mv5")
+radius = 0.05
+height = 0.1
+radial_segments = 8
+rings = 8
 
 [sub_resource type="Curve" id="Curve_5bycs"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.820961, 0.857651), -0.171568, -0.171568, 0, 0, Vector2(0.991266, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="CurveTexture" id="CurveTexture_ldlid"]
-curve = SubResource("Curve_5bycs")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dyqw3"]
-direction = Vector3(-1, 0, 0)
-spread = 10.0
-gravity = Vector3(0, 0, 0)
-initial_velocity_min = 4.0
-initial_velocity_max = 4.0
-scale_min = 3.0
-scale_max = 5.0
-scale_curve = SubResource("CurveTexture_ldlid")
-color = Color(1, 1, 0.607843, 1)
-color_ramp = SubResource("GradientTexture1D_y2str")
+[sub_resource type="Gradient" id="Gradient_hgaj5"]
+offsets = PackedFloat32Array(0, 0.2, 0.448649, 0.648649, 0.832432, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.141176, 1, 1, 1, 1, 1, 1, 1, 0.164706, 1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="Animation" id="Animation_epacr"]
 length = 0.001
@@ -80,12 +86,21 @@ _data = {
 "quit": SubResource("Animation_rf4sf")
 }
 
-[node name="NoteBrokenParticles" type="GPUParticles3D"]
+[node name="NoteBrokenParticles" type="CPUParticles3D"]
 amount = 600
 lifetime = 10.0
-transform_align = 1
-process_material = SubResource("ParticleProcessMaterial_dyqw3")
-draw_pass_1 = ExtResource("1_bn0o7")
+fixed_fps = 30
+mesh = SubResource("SphereMesh_s8tid")
+direction = Vector3(-1, 0, 0)
+spread = 10.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 4.0
+initial_velocity_max = 4.0
+scale_amount_min = 3.0
+scale_amount_max = 5.0
+scale_amount_curve = SubResource("Curve_5bycs")
+color = Color(1, 1, 0.607843, 1)
+color_ramp = SubResource("Gradient_hgaj5")
 script = ExtResource("2_oge60")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
