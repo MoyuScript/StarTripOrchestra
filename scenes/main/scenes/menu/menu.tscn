@@ -1,0 +1,192 @@
+[gd_scene load_steps=14 format=3 uid="uid://boibknvwwiud5"]
+
+[ext_resource type="Script" path="res://scenes/main/scenes/menu/Menu.cs" id="1_e8cf0"]
+[ext_resource type="Script" path="res://scenes/main/scenes/menu/ImportMidiButton.cs" id="2_erqly"]
+[ext_resource type="Script" path="res://scenes/main/scenes/menu/PlayButton.cs" id="2_eu73l"]
+[ext_resource type="Script" path="res://scenes/main/scenes/menu/MidiPathLabel.cs" id="3_fjslh"]
+[ext_resource type="Script" path="res://scenes/main/scenes/menu/ImportAudioButton.cs" id="4_t3m6n"]
+[ext_resource type="Script" path="res://scenes/main/scenes/menu/AudioPathLabel.cs" id="5_wvwmv"]
+[ext_resource type="Script" path="res://scenes/main/scenes/menu/NoteMetersPerSeconds.cs" id="6_85r7u"]
+[ext_resource type="Script" path="res://scenes/main/scenes/menu/NotePitchGapSlider.cs" id="7_n8o37"]
+[ext_resource type="Script" path="res://scenes/main/scenes/menu/MidiInfo.cs" id="7_rq7ul"]
+[ext_resource type="Script" path="res://scenes/main/scenes/menu/TrackList.cs" id="8_oa2cs"]
+[ext_resource type="PackedScene" uid="uid://c7bs24cgbhwqw" path="res://scenes/main/scenes/menu/scenes/track_item/track_item.tscn" id="9_quxet"]
+[ext_resource type="Script" path="res://scenes/main/scenes/menu/IsDebugInfoVisible.cs" id="10_q81ye"]
+
+[sub_resource type="Theme" id="Theme_dvas7"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_dvas7")
+script = ExtResource("1_e8cf0")
+
+[node name="Bg" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.219608)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PlayControl" type="VBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Title" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PlayControl"]
+layout_mode = 2
+text = "【播放控制】"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/PlayControl"]
+layout_mode = 2
+
+[node name="PlayButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/PlayControl/HBoxContainer"]
+layout_mode = 2
+text = "播放"
+script = ExtResource("2_eu73l")
+
+[node name="ResetButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/PlayControl/HBoxContainer"]
+layout_mode = 2
+disabled = true
+text = "重置"
+
+[node name="MidiConfig" type="VBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/MidiConfig"]
+layout_mode = 2
+text = "【MIDI 配置】"
+
+[node name="ImportMidi" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/MidiConfig"]
+layout_mode = 2
+
+[node name="ImportMidiButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/MidiConfig/ImportMidi"]
+layout_mode = 2
+text = "导入 MIDI"
+script = ExtResource("2_erqly")
+
+[node name="MidiPathLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/MidiConfig/ImportMidi"]
+layout_mode = 2
+text = "请选择 MIDI 文件..."
+script = ExtResource("3_fjslh")
+
+[node name="FileDialog" type="FileDialog" parent="MarginContainer/ScrollContainer/VBoxContainer/MidiConfig/ImportMidi"]
+title = "Open a File"
+initial_position = 1
+size = Vector2i(1000, 700)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.mid")
+
+[node name="ImportAudio" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/MidiConfig"]
+layout_mode = 2
+
+[node name="ImportAudioButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/MidiConfig/ImportAudio"]
+layout_mode = 2
+text = "导入音频"
+script = ExtResource("4_t3m6n")
+
+[node name="AudioPathLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/MidiConfig/ImportAudio"]
+layout_mode = 2
+text = "请选择音频文件..."
+script = ExtResource("5_wvwmv")
+
+[node name="FileDialog" type="FileDialog" parent="MarginContainer/ScrollContainer/VBoxContainer/MidiConfig/ImportAudio"]
+title = "Open a File"
+initial_position = 1
+size = Vector2i(1000, 700)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.mp3")
+
+[node name="TrackConfig" type="VBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig"]
+layout_mode = 2
+text = "【轨道配置】"
+
+[node name="NoteMetersPerSeconds" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig/NoteMetersPerSeconds"]
+layout_mode = 2
+text = "音符长度（米/秒）"
+
+[node name="NoteMetersPerSecondsSlider" type="HSlider" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig/NoteMetersPerSeconds"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+min_value = 1.0
+value = 1.0
+script = ExtResource("6_85r7u")
+
+[node name="ValueDisplayer" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig/NoteMetersPerSeconds"]
+layout_mode = 2
+text = "1"
+
+[node name="NotePitchGap" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig/NotePitchGap"]
+layout_mode = 2
+text = "音高间距（米）"
+
+[node name="NotePitchGapSlider" type="HSlider" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig/NotePitchGap"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+min_value = 1.0
+max_value = 20.0
+value = 1.0
+script = ExtResource("7_n8o37")
+
+[node name="ValueDisplayer" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig/NotePitchGap"]
+layout_mode = 2
+text = "1"
+
+[node name="MidiInfo" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig"]
+layout_mode = 2
+script = ExtResource("7_rq7ul")
+
+[node name="TrackList" type="VBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig"]
+layout_mode = 2
+script = ExtResource("8_oa2cs")
+TrackScene = ExtResource("9_quxet")
+
+[node name="InfoVisibility" type="VBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Title" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/InfoVisibility"]
+layout_mode = 2
+text = "【信息显示】"
+
+[node name="IsDebugInfoVisible" type="CheckButton" parent="MarginContainer/ScrollContainer/VBoxContainer/InfoVisibility"]
+layout_mode = 2
+text = "显示调试信息"
+script = ExtResource("10_q81ye")
