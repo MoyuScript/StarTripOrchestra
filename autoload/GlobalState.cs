@@ -12,7 +12,7 @@ public partial class GlobalState : Node
 		Singleton = this;
 	}
 
-	[Export] public float NoteMoveSpeed = 10.0f;
+	[Export] public float NoteMoveSpeed = 0.0f;
 
 	bool _isDebugInfoVisible = false;
 	[Signal] public delegate void IsDebugInfoVisibleChangedEventHandler();
@@ -107,6 +107,30 @@ public partial class GlobalState : Node
 		{
 			_notePitchGap = value;
 			EmitSignal(SignalName.NotePitchGapChanged);
+		}
+	}
+
+	float _trackMovement = 0;
+	[Signal] public delegate void TrackMovementChangedEventHandler();
+	public float TrackMovement
+	{
+		get => _trackMovement;
+		set
+		{
+			_trackMovement = value;
+			EmitSignal(SignalName.TrackMovementChanged);
+		}
+	}
+
+	float _trackGap = 1.0f;
+	[Signal] public delegate void TrackGapChangedEventHandler();
+	[Export] public float TrackGap
+	{
+		get => _trackGap;
+		set
+		{
+			_trackGap = value;
+			EmitSignal(SignalName.TrackGapChanged);
 		}
 	}
 }

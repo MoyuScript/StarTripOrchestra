@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://boibknvwwiud5"]
+[gd_scene load_steps=18 format=3 uid="uid://boibknvwwiud5"]
 
 [ext_resource type="Script" path="res://scenes/main/scenes/menu/Menu.cs" id="1_e8cf0"]
 [ext_resource type="Script" path="res://scenes/main/scenes/menu/ImportMidiButton.cs" id="2_erqly"]
@@ -10,10 +10,20 @@
 [ext_resource type="Script" path="res://scenes/main/scenes/menu/NotePitchGapSlider.cs" id="7_n8o37"]
 [ext_resource type="Script" path="res://scenes/main/scenes/menu/MidiInfo.cs" id="7_rq7ul"]
 [ext_resource type="Script" path="res://scenes/main/scenes/menu/TrackList.cs" id="8_oa2cs"]
+[ext_resource type="Script" path="res://scenes/main/scenes/menu/TrackGapSlider.cs" id="9_csahg"]
+[ext_resource type="Script" path="res://scenes/main/scenes/menu/TrackMovementSlider.cs" id="9_knh4t"]
 [ext_resource type="PackedScene" uid="uid://c7bs24cgbhwqw" path="res://scenes/main/scenes/menu/scenes/track_item/track_item.tscn" id="9_quxet"]
 [ext_resource type="Script" path="res://scenes/main/scenes/menu/IsDebugInfoVisible.cs" id="10_q81ye"]
 
 [sub_resource type="Theme" id="Theme_dvas7"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_c2g8h"]
+device = -1
+keycode = 32
+unicode = 32
+
+[sub_resource type="Shortcut" id="Shortcut_83st2"]
+events = [SubResource("InputEventKey_c2g8h")]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -66,6 +76,7 @@ layout_mode = 2
 
 [node name="PlayButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/PlayControl/HBoxContainer"]
 layout_mode = 2
+shortcut = SubResource("Shortcut_83st2")
 text = "播放"
 script = ExtResource("2_eu73l")
 
@@ -158,14 +169,53 @@ layout_mode = 2
 text = "音高间距（米）"
 
 [node name="NotePitchGapSlider" type="HSlider" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig/NotePitchGap"]
-custom_minimum_size = Vector2(100, 0)
+custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 min_value = 1.0
 max_value = 20.0
+step = 0.01
 value = 1.0
 script = ExtResource("7_n8o37")
 
 [node name="ValueDisplayer" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig/NotePitchGap"]
+layout_mode = 2
+text = "1"
+
+[node name="TrackGap" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig/TrackGap"]
+layout_mode = 2
+text = "轨道间距（米）"
+
+[node name="TrackGapSlider" type="HSlider" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig/TrackGap"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+min_value = 1.0
+max_value = 20.0
+step = 0.01
+value = 1.0
+script = ExtResource("9_csahg")
+
+[node name="ValueDisplayer" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig/TrackGap"]
+layout_mode = 2
+text = "1"
+
+[node name="TrackMovement" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig/TrackMovement"]
+layout_mode = 2
+text = "整体上下移动（米）"
+
+[node name="TrackMovementSlider" type="HSlider" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig/TrackMovement"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+min_value = -500.0
+max_value = 500.0
+script = ExtResource("9_knh4t")
+
+[node name="ValueDisplayer" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/TrackConfig/TrackMovement"]
 layout_mode = 2
 text = "1"
 

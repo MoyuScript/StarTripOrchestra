@@ -7,6 +7,16 @@ public partial class BackgroundMusic : AudioStreamPlayer
 	public override void _Ready()
 	{
 		GlobalState.Singleton.AudioPathChanged += OnAudioPathChanged;
+		GlobalSignal.Singleton.StartPlay += OnStartPlay;
+	}
+
+	void OnStartPlay()
+	{
+		if (GlobalState.Singleton.MidiFile is null || GlobalState.Singleton.AudioPath is null)
+		{
+			return;
+		}
+		Play();
 	}
 
 	void OnAudioPathChanged()
@@ -31,10 +41,5 @@ public partial class BackgroundMusic : AudioStreamPlayer
 		{
 			Main.Alert($"音频加载失败：{e.Message}");
 		}
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
 	}
 }
