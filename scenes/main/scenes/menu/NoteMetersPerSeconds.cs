@@ -8,9 +8,13 @@ public partial class NoteMetersPerSeconds : HSlider
 	public override void _Ready()
 	{
 		ValueChanged += OnValueChanged;
-		GlobalState.Singleton.NoteMetersPerSecondsChanged += OnGlobalStateChanged;
-		
+		GlobalState.Singleton.HasStartedPlayChanged += OnHasStartedPlayChanged;
 		OnGlobalStateChanged();
+	}
+
+	void OnHasStartedPlayChanged()
+	{
+		Editable = !GlobalState.Singleton.HasStartedPlay;
 	}
 
 	void OnGlobalStateChanged()

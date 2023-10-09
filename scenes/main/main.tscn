@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://boq64huogwdbh"]
+[gd_scene load_steps=34 format=3 uid="uid://boq64huogwdbh"]
 
 [ext_resource type="Script" path="res://scenes/main/Main.cs" id="1_alejo"]
 [ext_resource type="Script" path="res://scenes/main/HitFace.cs" id="2_0nkmr"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://o1ckyn20vtkc" path="res://scenes/main/scenes/debug_info/debug_info.tscn" id="5_11nj1"]
 [ext_resource type="PackedScene" uid="uid://boibknvwwiud5" path="res://scenes/main/scenes/menu/menu.tscn" id="5_f2jre"]
 [ext_resource type="Script" path="res://scenes/main/BackgroundMusic.cs" id="6_12si2"]
+[ext_resource type="Script" path="res://scenes/main/MidiPlayer.cs" id="8_odtkn"]
 
 [sub_resource type="Shader" id="Shader_jhd0i"]
 code = "
@@ -298,3 +299,6 @@ script = ExtResource("6_12si2")
 [node name="AlertDialog" type="AcceptDialog" parent="."]
 initial_position = 1
 size = Vector2i(600, 200)
+
+[node name="MidiPlayer" type="Node" parent="."]
+script = ExtResource("8_odtkn")

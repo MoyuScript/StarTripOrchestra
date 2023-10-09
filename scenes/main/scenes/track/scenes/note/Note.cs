@@ -68,8 +68,16 @@ public partial class Note : CharacterBody3D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		float speed = GlobalState.Singleton.NoteMoveSpeed * (float)delta;
-		KinematicCollision3D collision = MoveAndCollide(new Vector3(-speed, 0, 0));
+		if (!GlobalState.Singleton.IsPlaying)
+		{
+			return;
+		}
+		if (_isDisappearing)
+		{
+			return;
+		}
+		float moveDelta = GlobalState.Singleton.NoteMetersPerSeconds * (float)delta;
+		KinematicCollision3D collision = MoveAndCollide(new Vector3(-moveDelta, 0, 0));
 
 		if (collision is not null)
 		{
@@ -86,21 +94,25 @@ public partial class Note : CharacterBody3D
 
 	public override void _Process(double delta)
 	{
+		if (!GlobalState.Singleton.IsPlaying)
+		{
+			return;
+		}
+		
 		if (_isDisappearing)
 		{
 			if (Scale.X <= 0.1f)
 			{
 				StopDisappear();
-				QueueFree();
-				// Visible = false;
-				// SetProcess(false);
-				// SetPhysicsProcess(false);
+				SetProcess(false);
+				SetPhysicsProcess(false);
+				// QueueFree();
+				Visible = false;
 				return;
 			}
-			GlobalState globalState = GetNode<GlobalState>("/root/GlobalState");
 			Scale = Scale with
 			{
-				X = Scale.X - globalState.NoteMoveSpeed * (float)delta
+				X = Scale.X - GlobalState.Singleton.NoteMetersPerSeconds * (float)delta
 			};
 		}
 	}
@@ -110,13 +122,12 @@ public partial class Note : CharacterBody3D
 		{
 			return;
 		}
-		GlobalState globalState = GetNode<GlobalState>("/root/GlobalState");
 		_isDisappearing = true;
 
 		_brokenParticles = NoteBrokenParticlesScene.Instantiate<NoteBrokenParticles>();
 		_brokenParticles.Position = Position;
 		_brokenParticles.ParticleColor = NoteColor;
-		_brokenParticles.Velocity = globalState.NoteMoveSpeed;
+		_brokenParticles.Velocity = GlobalState.Singleton.NoteMetersPerSeconds;
 		AddSibling(_brokenParticles);
 
 		_hitLight = HitLightScene.Instantiate<HitLight>();

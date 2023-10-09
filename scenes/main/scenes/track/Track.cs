@@ -123,4 +123,14 @@ public partial class Track : Node3D
 		GlobalState.Singleton.NoteMetersPerSecondsChanged += OnNoteMetersPerSecondsChanged;
 		GlobalState.Singleton.NotePitchGapChanged += OnNotePitchGapChanged;
 	}
+
+	public override void _ExitTree()
+	{
+		GlobalState.Singleton.NoteMetersPerSecondsChanged -= OnNoteMetersPerSecondsChanged;
+		GlobalState.Singleton.NotePitchGapChanged -= OnNotePitchGapChanged;
+		if (_trackConfigItem is not null)
+		{
+			_trackConfigItem.TrackColorChanged -= OnTrackColorChanged;	
+		}
+	}
 }

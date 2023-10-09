@@ -8,8 +8,13 @@ public partial class NotePitchGapSlider : HSlider
 	{
 		ValueChanged += OnValueChanged;
 		GlobalState.Singleton.NotePitchGapChanged += OnGlobalStateChanged;
-		
+		GlobalState.Singleton.HasStartedPlayChanged += OnHasStartedPlayChanged;
 		OnGlobalStateChanged();
+	}
+
+	void OnHasStartedPlayChanged()
+	{
+		Editable = !GlobalState.Singleton.HasStartedPlay;
 	}
 
 	void OnGlobalStateChanged()
