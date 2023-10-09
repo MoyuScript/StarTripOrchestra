@@ -1,9 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://boibknvwwiud5"]
+[gd_scene load_steps=19 format=3 uid="uid://boibknvwwiud5"]
 
 [ext_resource type="Script" path="res://scenes/main/scenes/menu/Menu.cs" id="1_e8cf0"]
 [ext_resource type="Script" path="res://scenes/main/scenes/menu/ImportMidiButton.cs" id="2_erqly"]
 [ext_resource type="Script" path="res://scenes/main/scenes/menu/PlayButton.cs" id="2_eu73l"]
 [ext_resource type="Script" path="res://scenes/main/scenes/menu/MidiPathLabel.cs" id="3_fjslh"]
+[ext_resource type="Script" path="res://scenes/main/scenes/menu/ResetButton.cs" id="3_ic03l"]
 [ext_resource type="Script" path="res://scenes/main/scenes/menu/ImportAudioButton.cs" id="4_t3m6n"]
 [ext_resource type="Script" path="res://scenes/main/scenes/menu/AudioPathLabel.cs" id="5_wvwmv"]
 [ext_resource type="Script" path="res://scenes/main/scenes/menu/NoteMetersPerSeconds.cs" id="6_85r7u"]
@@ -82,8 +83,8 @@ script = ExtResource("2_eu73l")
 
 [node name="ResetButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/PlayControl/HBoxContainer"]
 layout_mode = 2
-disabled = true
 text = "重置"
+script = ExtResource("3_ic03l")
 
 [node name="MidiConfig" type="VBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2

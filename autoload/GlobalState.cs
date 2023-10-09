@@ -12,7 +12,29 @@ public partial class GlobalState : Node
 		Singleton = this;
 	}
 
-	[Export] public float NoteMoveSpeed = 0.0f;
+	bool _hasStartedPlay = false;
+	[Signal] public delegate void HasStartedPlayChangedEventHandler();
+	[Export] public bool HasStartedPlay
+	{
+		get => _hasStartedPlay;
+		set
+		{
+			_hasStartedPlay = value;
+			EmitSignal(SignalName.HasStartedPlayChanged);
+		}
+	}
+
+	bool _isPlaying = false;
+	[Signal] public delegate void IsPlayingChangedEventHandler();
+	[Export] public bool IsPlaying
+	{
+		get => _isPlaying;
+		set
+		{
+			_isPlaying = value;
+			EmitSignal(SignalName.IsPlayingChanged);
+		}
+	}
 
 	bool _isDebugInfoVisible = false;
 	[Signal] public delegate void IsDebugInfoVisibleChangedEventHandler();

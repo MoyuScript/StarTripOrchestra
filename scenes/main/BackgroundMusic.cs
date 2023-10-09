@@ -7,16 +7,39 @@ public partial class BackgroundMusic : AudioStreamPlayer
 	public override void _Ready()
 	{
 		GlobalState.Singleton.AudioPathChanged += OnAudioPathChanged;
-		GlobalSignal.Singleton.StartPlay += OnStartPlay;
+		GlobalState.Singleton.IsPlayingChanged += OnIsPlayingChanged;
+		GlobalSignal.Singleton.OnReset += OnReset;
 	}
 
-	void OnStartPlay()
+	void OnReset()
 	{
-		if (GlobalState.Singleton.MidiFile is null || GlobalState.Singleton.AudioPath is null)
+		Stop();
+	}
+
+	void OnIsPlayingChanged()
+	{
+		if (Stream is null)
 		{
 			return;
 		}
-		Play();
+		if (GlobalState.Singleton.IsPlaying)
+		{
+			if (StreamPaused)
+			{
+				// Resume
+				StreamPaused = false;
+			}
+			else
+			{
+				// Start Play
+				Playing = true;
+			}
+		}
+		else
+		{
+			// Pause
+			StreamPaused = true;
+		}
 	}
 
 	void OnAudioPathChanged()

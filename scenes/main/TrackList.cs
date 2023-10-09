@@ -11,8 +11,13 @@ public partial class TrackList : Node3D
 		GlobalState.Singleton.MidiTrackToMenuTrackConfigNodeChanged += OnMidiTrackToMenuTrackConfigNodeChanged;
 		GlobalState.Singleton.TrackMovementChanged += OnTrackMovementChanged;
 		GlobalState.Singleton.TrackGapChanged += OnTrackGapChanged;
+		GlobalSignal.Singleton.OnReset += GenerateTracks;
 	}
 
+	void OnReset()
+	{
+		GenerateTracks();
+	}
 
 	void OnTrackGapChanged()
 	{
@@ -37,10 +42,14 @@ public partial class TrackList : Node3D
 		};
 	}
 
-	void OnMidiTrackToMenuTrackConfigNodeChanged()
+	void GenerateTracks()
 	{
-		// TODO: 优化
 		var midiFile = GlobalState.Singleton.MidiFile;
+
+		if (midiFile is null)
+		{
+			return;
+		}
 
 		foreach (var child in GetChildren())
 		{
@@ -55,6 +64,11 @@ public partial class TrackList : Node3D
 			trackNode.MidiTrack = track;
 			trackNode.Position = new Vector3(0, GlobalState.Singleton.TrackGap, 0) * index++;
 		}
+	}
+
+	void OnMidiTrackToMenuTrackConfigNodeChanged()
+	{
+		GenerateTracks();
 	}
 
 }

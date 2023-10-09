@@ -62,6 +62,7 @@ public partial class TrackItem : HBoxContainer
 
 	void OnNodeTrackNameChanged(string text)
 	{
+		TrackName = text;
 		EmitSignal(SignalName.TrackNameChanged);
 	}
 
@@ -69,7 +70,7 @@ public partial class TrackItem : HBoxContainer
 	{
 		try
 		{
-			Convert.ToInt32(text);
+			TrackIndex = Convert.ToInt32(text);
 		}
 		catch
 		{
@@ -80,6 +81,7 @@ public partial class TrackItem : HBoxContainer
 
 	void OnNodeTrackColorChanged(Color color)
 	{
+		TrackColor = color;
 		EmitSignal(SignalName.TrackColorChanged);
 	}
 

@@ -10,5 +10,5 @@ public partial class GlobalSignal : Node
         Singleton = this;
     }
 
-    [Signal] public delegate void StartPlayEventHandler();
+    [Signal] public delegate void OnResetEventHandler();
 }
